@@ -122,4 +122,25 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         
     })
 
+    it('marca o tipo de atendimento "Feedback" (USE CYPRESS SELECTOR)', function() {
+        cy.get(':nth-child(4) > input').check().should('have.value', 'Feedback');
+        
+    })
+
+    it('marca o tipo de atendimento "Feedback" (USE DOM SELECT)', function() {
+        cy.get('input[type="radio"][value="feedback"').should('have.value', 'Feedback');
+        
+    })
+
+    it.only('marca cada tipo de atendimento', function() {
+        cy.get('input[type="radio"]').check()
+        .should('have.length', 3)
+        .each(function($radio) {
+            cy.wrap($radio).check();
+            cy.wrap($radio).should('be.checked');
+
+        });
+        
+    })
+
   })
