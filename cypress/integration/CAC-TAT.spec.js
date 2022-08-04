@@ -119,20 +119,17 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     it('seleciona um produto (Blog) por seu índice  (USE DOM ELEM)', function() {
         cy.get('#product').select(1).should('have.value', 'blog');
-        
     })
 
     it('marca o tipo de atendimento "Feedback" (USE CYPRESS SELECTOR)', function() {
         cy.get(':nth-child(4) > input').check().should('have.value', 'Feedback');
-        
     })
 
     it('marca o tipo de atendimento "Feedback" (USE DOM SELECT)', function() {
         cy.get('input[type="radio"][value="feedback"').should('have.value', 'Feedback');
-        
     })
 
-    it.only('marca cada tipo de atendimento', function() {
+    it('marca cada tipo de atendimento', function() {
         cy.get('input[type="radio"]').check()
         .should('have.length', 3)
         .each(function($radio) {
@@ -141,6 +138,42 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
         });
         
+    })
+
+    it('marca ambos checkboxes, depois desmarca o último', function() {
+        cy.get('input[type="checkbox"]').check()
+        .should('be.checked')
+        .check()
+        .last().uncheck()
+        .last().should('not.be.checked');
+    })
+
+    it('seleciona um arquivo da pasta fixtures', function() {
+        cy.get('input[type="file"]')
+        .should('not.have.value')
+        .selectFile('../../../../../projetos/udemy/cypress-basico-v2/cypress/fixtures/example.json')
+        .should(function($input) {
+            expect($input[0].files[0].name).to.equal('example.json');
+        });
+    })
+
+    it('seleciona um arquivo simulando um drag-and-drop', function() {
+        cy.get('input[type="file"]')
+        .should('not.have.value')
+        .selectFile('../../../../../projetos/udemy/cypress-basico-v2/cypress/fixtures/example.json', { action: 'drag-drop'})
+        .should(function($input) {
+            expect($input[0].files[0].name).to.equal('example.json');
+        });
+    })
+
+    it.only('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', function() {
+        cy.fixture('example.json').as('sampleFile')
+        cy.get('input[type="file"]')
+        .selectFile('@sampleFile')
+        .should(function($input) {
+            expect($input[0].files[0].name).to.equal('example.json');
+        });
+
     })
 
   })
