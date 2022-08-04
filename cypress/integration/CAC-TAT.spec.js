@@ -122,11 +122,11 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
 
     it('marca o tipo de atendimento "Feedback" (USE CYPRESS SELECTOR)', function() {
-        cy.get(':nth-child(4) > input').check().should('have.value', 'Feedback');
+        cy.get(':nth-child(4) > input').check().should('have.value', 'feedback');
     })
 
     it('marca o tipo de atendimento "Feedback" (USE DOM SELECT)', function() {
-        cy.get('input[type="radio"][value="feedback"').should('have.value', 'Feedback');
+        cy.get('input[type="radio"][value="feedback"').should('have.value', 'feedback');
     })
 
     it('marca cada tipo de atendimento', function() {
@@ -166,7 +166,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         });
     })
 
-    it.only('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', function() {
+    it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', function() {
         cy.fixture('example.json').as('sampleFile')
         cy.get('input[type="file"]')
         .selectFile('@sampleFile')
@@ -175,5 +175,21 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         });
 
     })
+
+    it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', function() {
+        cy.get('a').should('have.attr', 'target', '_blank');
+    })
+
+    it('acessa a página da política de privacidade removendo o target e então clicanco no link', function() {
+        cy.get('a').invoke('removeAttr', 'target').click();
+        cy.contains('Talking About Testing').should('be.visible');
+    })
+        
+
+    it('testa a página da política de privavidade de forma independente', function() {
+        cy.get('a').invoke('removeAttr', 'target').click();
+        cy.get('#title').contains('CAC TAT - Política de privacidade').should('be.visible');
+    })
+
 
   })
